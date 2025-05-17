@@ -1,0 +1,19 @@
+#!/bin/bash
+work_dir=$(fd -t d -d 1 . $HOME $HOME/stow $HOME/.config $HOME/projects | fzf)
+if [ -n "$work_dir" ]; then
+    session_name=$(basename "$work_dir")
+    tmux_running=$(pgrep tmux)
+    if [ -n "$tmux_running" ]; then
+        if [ -n "$TMUX" ]; then
+            tmux has-session -t "$session_name" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                tmux new-session -d -s "$session_name" -c "$work_dir"
+            fi
+            tmux switch-client -t "$session_name"
+        else
+            tmux new-session -A -s "$session_name" -c "$work_dir"
+        fi
+    else
+        tmux new-session -s "$session_name" -c "$work_dir"
+    fi
+fi
