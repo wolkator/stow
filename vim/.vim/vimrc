@@ -2,9 +2,6 @@ vim9script
 
 source $VIMRUNTIME/defaults.vim
 
-Messages maintainer: The Vim Project
-/home/tom
-"~/stow/vim/.vim/vimrc" 88L, 2796B
 if empty(glob($MYVIMDIR .. "/undo"))
 	silent execute("!mkdir " .. $MYVIMDIR .. "/undo")
 endif
@@ -19,7 +16,7 @@ set ignorecase smartcase
 set splitright splitbelow
 set foldmethod=indent foldlevelstart=99
 set path=.,, wildcharm=9 wildoptions=fuzzy,pum,tagfile
-set scrolloff=1000 nowrap clipboard^=unnamedplus
+set scrolloff=1000 clipboard^=unnamedplus
 set hidden noswapfile undofile undodir=$MYVIMDIR/undo
 
 packadd cfilter
