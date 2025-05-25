@@ -1,0 +1,92 @@
+vim9script
+
+source $VIMRUNTIME/defaults.vim
+
+Messages maintainer: The Vim Project
+/home/tom
+"~/stow/vim/.vim/vimrc" 88L, 2796B
+if empty(glob($MYVIMDIR .. "/undo"))
+	silent execute("!mkdir " .. $MYVIMDIR .. "/undo")
+endif
+
+g:mapleader = " "
+
+colorscheme quiet
+set background=dark
+set number colorcolumn=80 signcolumn=yes list
+set expandtab shiftwidth=4 tabstop=4 softtabstop=4
+set ignorecase smartcase
+set splitright splitbelow
+set foldmethod=indent foldlevelstart=99
+set path=.,, wildcharm=9 wildoptions=fuzzy,pum,tagfile
+set scrolloff=1000 nowrap clipboard^=unnamedplus
+set hidden noswapfile undofile undodir=$MYVIMDIR/undo
+
+packadd cfilter
+packadd comment
+
+# Plug
+var data_dir = $MYVIMDIR
+if empty(glob(data_dir .. "/autoload/plug.vim"))
+	silent execute("!curl -fLo " .. data_dir .. "/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+plug#begin($MYVIMDIR .. "/plugged")
+Plug "tpope/vim-flagship"
+Plug "tpope/vim-fugitive"
+Plug "tpope/vim-sensible"
+Plug "tpope/vim-sleuth"
+Plug "tpope/vim-surround"
+Plug "tpope/vim-unimpaired"
+Plug "tpope/vim-vinegar"
+Plug "junegunn/fzf", { "do": { -> fzf#install() } }
+Plug "junegunn/fzf.vim"
+Plug "yegappan/lsp"
+Plug 'vim-autoformat/vim-autoformat'
+Plug "tribela/vim-transparent"
+plug#end()
+
+# Settings
+var lspServers = [
+	{ name: "clangd", filetype: ["c", "cpp"], path: "clangd", args: ["--background-index"], },
+	{ name: "pylsp", filetype: "python", path: "pylsp", args: [], },
+	{ name: "ruff", filetype: "python", path: "ruff", args: ["server"], },
+]
+autocmd User LspSetup call LspAddServer(lspServers)
+def g:LspMappings()
+	setlocal completeopt-=preview
+	nnoremap <silent> <buffer> K :LspHover<cr>
+	nnoremap <silent> <buffer> <c-]> :LspGotoDefinition<cr>
+	nnoremap <silent> <buffer> grr :LspShowReferences<cr>
+	nnoremap <silent> <buffer> gra :LspCodeAction<cr>
+	nnoremap <silent> <buffer> grn :LspRename<cr>
+	nnoremap <silent> <buffer> ]d :LspDiagNext<cr>
+	nnoremap <silent> <buffer> [d :LspDiagPrev<cr>
+enddef
+autocmd User LspAttached call LspMappings()
+
+g:fzf_vim = {}
+g:fzf_vim.commands_expect = "enter"
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>g :Rg<cr>
+nnoremap <leader>h :Helptags<cr>
+nnoremap <leader>o :History<cr>
+nnoremap <leader>s :Commands<cr>
+
+g:formatdef_clang = '"clang-format --style=Microsoft"'
+g:formatters_c = ["clang"]
+g:formatters_cpp = ["clang"]
+
+augroup custom
+    autocmd!
+    autocmd CmdlineEnter * set hlsearch
+    autocmd CmdlineLeave * set nohlsearch
+    autocmd FileType qf nnoremap <buffer> <silent> <cr> <cr>:cclose<cr>
+    autocmd FileType qf nnoremap <buffer> <silent> <esc> :cclose<cr>
+augroup END
+
+nnoremap <leader>c :edit $MYVIMRC<cr>
+nnoremap <leader>d :lcd %:h<cr>
+nnoremap <leader>t :vertical terminal<cr>
+nnoremap <leader>u :PlugUpdate<cr>
+nnoremap <leader>w :set invwrap<cr>

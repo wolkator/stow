@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/tom/projects/control/julia'
+let g:netrw_dirhist_8='/home/tom/projects/control'
+let g:netrw_dirhist_7='/home/tom/projects/control/julia'
+let g:netrw_dirhist_6='/home/tom/stow/vim/.vim'
+let g:netrw_dirhist_5='/home/tom/stow/vim/.vim/plugged'
+let g:netrw_dirhist_4='/home/tom/stow/vim/.vim'
+let g:netrw_dirhist_3='/home/tom/stow/vim/.vim/autoload'
+let g:netrw_dirhist_2='/home/tom/stow/vim/.vim'
+let g:netrw_dirhist_1='/home/tom/projects/control/julia'
+let g:netrw_dirhist_0='/home/tom/projects/control'
