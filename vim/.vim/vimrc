@@ -2,10 +2,6 @@ vim9script
 
 source $VIMRUNTIME/defaults.vim
 
-if empty(glob($MYVIMDIR .. "/undo"))
-	silent execute("!mkdir " .. $MYVIMDIR .. "/undo")
-endif
-
 g:mapleader = " "
 
 colorscheme quiet
@@ -39,7 +35,6 @@ Plug "tpope/vim-vinegar"
 Plug "junegunn/fzf", { "do": { -> fzf#install() } }
 Plug "junegunn/fzf.vim"
 Plug "yegappan/lsp"
-Plug 'vim-autoformat/vim-autoformat'
 Plug "tribela/vim-transparent"
 plug#end()
 
@@ -70,16 +65,14 @@ nnoremap <leader>h :Helptags<cr>
 nnoremap <leader>o :History<cr>
 nnoremap <leader>s :Commands<cr>
 
-g:formatdef_clang = '"clang-format --style=Microsoft"'
-g:formatters_c = ["clang"]
-g:formatters_cpp = ["clang"]
-
 augroup custom
     autocmd!
     autocmd CmdlineEnter * set hlsearch
     autocmd CmdlineLeave * set nohlsearch
     autocmd FileType qf nnoremap <buffer> <silent> <cr> <cr>:cclose<cr>
     autocmd FileType qf nnoremap <buffer> <silent> <esc> :cclose<cr>
+    autocmd FileType c,cpp formatprg=clang-format\ --style=Microsoft\ -
+    autocmd FileType python formatprg=ruff\ format\ -q\ -
 augroup END
 
 nnoremap <leader>c :edit $MYVIMRC<cr>
