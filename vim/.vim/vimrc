@@ -75,6 +75,8 @@ augroup custom
     autocmd FileType python formatprg=ruff\ format\ -q\ -
 augroup END
 
+noremap j gj
+noremap k gk
 nnoremap <leader>c :edit $MYVIMRC<cr>
 nnoremap <leader>d :lcd %:h<cr>
 nnoremap <leader>t :vertical terminal<cr>
