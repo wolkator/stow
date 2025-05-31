@@ -71,8 +71,8 @@ augroup custom
     autocmd CmdlineLeave * set nohlsearch
     autocmd FileType qf nnoremap <buffer> <silent> <cr> <cr>:cclose<cr>
     autocmd FileType qf nnoremap <buffer> <silent> <esc> :cclose<cr>
-    autocmd FileType c,cpp formatprg=clang-format\ --style=Microsoft\ -
-    autocmd FileType python formatprg=ruff\ format\ -q\ -
+    autocmd FileType c,cpp set formatprg=clang-format\ --style=Microsoft\ -
+    autocmd FileType python set formatprg=ruff\ format\ -q\ -
 augroup END
 
 noremap j gj

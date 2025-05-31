@@ -1,5 +1,5 @@
 #!/bin/bash
-work_dir=$(fd -t d -d 1 . $HOME $HOME/curtin $HOME/stow $HOME/.config $HOME/projects | fzf)
+work_dir=$(fd -t d -d 1 . $HOME $HOME/repos $HOME/curtin $HOME/stow $HOME/.config $HOME/projects | fzf)
 if [ -n "$work_dir" ]; then
     session_name=$(basename "$work_dir")
     tmux_running=$(pgrep tmux)
