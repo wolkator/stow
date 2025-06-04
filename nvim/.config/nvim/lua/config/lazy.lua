@@ -38,4 +38,4 @@ require("lazy").setup({
 
 require("config.keymaps")
 
-vim.cmd.colorscheme("quiet")
+vim.cmd.colorscheme("kanagawa-dragon")

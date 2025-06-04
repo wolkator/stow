@@ -6,7 +6,7 @@ import = ["themes/themes/iterm.toml"]
 # import = ["themes/themes/ayu_dark.toml"]
 
 [env]
-TERM = "alacritty"
+# TERM = "alacritty"
 
 [window]
 decorations = "none"
