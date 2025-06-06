@@ -44,7 +44,6 @@ augroup CUSTOM
     autocmd!
     autocmd FileType c,cpp setlocal formatprg=clang-format\ --style=Microsoft\ -
     autocmd FileType python setlocal formatprg=ruff\ format\ -q\ -
-    autocmd FileType python setlocal makeprg=ruff\ check\ --output-format=concise\ %
     autocmd ShellFilterPost * if v:shell_error != 0 | silent undo | endif
     autocmd FileType qf nnoremap <buffer> <silent> <cr> <cr>:cclose<cr>
     autocmd CmdlineEnter * set hlsearch
@@ -57,23 +56,37 @@ noremap j gj
 noremap k gk
 noremap 0 g0
 noremap $ g$
-nnoremap [b :bprevious<cr>
-nnoremap ]b :bnext<cr>
-nnoremap [q :cprevious<cr>
-nnoremap ]q :cnext<cr>
+noremap [b :bprevious<cr>
+noremap ]b :bnext<cr>
+noremap [q :cprevious<cr>
+noremap ]q :cnext<cr>
 nnoremap <leader>b :buffer <tab>
 nnoremap <silent> <leader>c :close<cr>
 nnoremap <silent> <leader>d :lcd %:h<cr>
-nnoremap <leader>f :find **<tab><c-p>
-nnoremap <leader>F mfgggqG`f
+nnoremap <leader>f :find **/*
 nnoremap <leader>g :execute('silent grep! ' .. input('Grep: ')) \| redraw! \| copen<cr>
-nnoremap <leader>h :help <tab><c-p>
-nnoremap <leader>H :execute('helpgrep ' .. input('Helpgrep: ')) \| copen<cr>
+nnoremap <leader>h :execute('helpgrep ' .. input('Helpgrep: ')) \| copen<cr>
 nnoremap <leader>o :call setqflist([], ' ', { "efm": "%f", "lines": v:oldfiles }) \| copen<cr>
 nnoremap <silent> <leader>q :copen<cr>
-nnoremap <silent> <leader>s :call setreg("c", system("xsel -b"), "c") \| call system("xsel -bi", getreg(""))<cr>
+nnoremap <silent> <leader>s :call setreg("", system("xsel -b"))<cr>
+nnoremap <silent> <leader>S :call system("xsel -bi", getreg(""))<cr>
 nnoremap <silent> <leader>t :vertical terminal<cr>
-nnoremap <silent> <leader>T :tabnew<cr>
 nnoremap <silent> <leader>v :edit $MYVIMRC<cr>
 nnoremap <silent> <leader>w :set invwrap<cr>
 nnoremap - :edit .<cr>
+
+# Settings
+# var lspServers = [
+# 	{ name: "clangd", filetype: ["c", "cpp"], path: "clangd", args: ["--background-index"], },
+# 	{ name: "pylsp", filetype: "python", path: "pylsp", args: [], },
+# 	{ name: "ruff", filetype: "python", path: "ruff", args: ["server"], },
+# ]
+# autocmd User LspSetup call LspAddServer(lspServers)
+# setlocal completeopt-=preview
+# nnoremap <silent> <buffer> K :LspHover<cr>
+# nnoremap <silent> <buffer> <c-]> :LspGotoDefinition<cr>
+# nnoremap <silent> <buffer> grr :LspShowReferences<cr>
+# nnoremap <silent> <buffer> gra :LspCodeAction<cr>
+# nnoremap <silent> <buffer> grn :LspRename<cr>
+# nnoremap <silent> <buffer> ]d :LspDiagNext<cr>
+# nnoremap <silent> <buffer> [d :LspDiagPrev<cr>
