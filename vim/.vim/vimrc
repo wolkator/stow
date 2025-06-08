@@ -3,21 +3,21 @@ vim9script
 # Baseline is vim defaults
 source $VIMRUNTIME/defaults.vim
 
-# Builtin plugins
+# Builtin plugins for quickfix filtering and commenting
 packadd cfilter
 packadd comment
 
 # Appearance options
 colorscheme quiet
 set background=dark
-highlight Normal ctermbg=NONE
+highlight Normal ctermbg=NONE # transparent background
 set number
 set colorcolumn=80
 set signcolumn=yes
 set listchars=tab:>\ \ ,trail:-,precedes:@,extends:@
 set list
 set nowrap
-set scrolloff=1000
+set scrolloff=1000 # keep cursor in the centre
 
 # Behaviour options
 set expandtab
@@ -30,23 +30,31 @@ set splitright
 set splitbelow
 set foldmethod=indent
 set foldlevelstart=99
-set wildcharm=9
+set wildcharm=9 # <tab>
 set wildoptions=fuzzy,pum,tagfile
 set hidden
 set noswapfile
 set path=.,**
 set undofile
+if !isdirectory($MYVIMDIR .. "/undo")
+    echom "Creating " .. $MYVIMDIR .. "/undo directory"
+    mkdir($MYVIMDIR .. "/undo")
+endif
 set undodir=$MYVIMDIR/undo
 set grepprg=rg\ --vimgrep\ -uu
 
 # Autocommands
 augroup CUSTOM
     autocmd!
+    # Formatters
     autocmd FileType c,cpp setlocal formatprg=clang-format\ --style=Microsoft\ -
     autocmd FileType python setlocal formatprg=ruff\ format\ -q\ -
+    # Run code and put errors/warnings in quickfix list
     autocmd FileType python setlocal makeprg=ruff\ check\ --output-format=concise\ %
+    # Undo changes if external command exits with error
     autocmd ShellFilterPost * if v:shell_error != 0 | silent undo | endif
     autocmd FileType qf nnoremap <buffer> <silent> <cr> <cr>:cclose<cr>
+    # Smart search highlighting
     autocmd CmdlineEnter * set hlsearch
     autocmd CmdlineLeave * set nohlsearch
 augroup END
@@ -61,19 +69,19 @@ nnoremap [b :bprevious<cr>
 nnoremap ]b :bnext<cr>
 nnoremap [q :cprevious<cr>
 nnoremap ]q :cnext<cr>
+nnoremap [t :tabprevious<cr>
+nnoremap ]t :tabnext<cr>
 nnoremap <leader>b :buffer <tab>
 nnoremap <silent> <leader>c :close<cr>
 nnoremap <silent> <leader>d :lcd %:h<cr>
 nnoremap <leader>f :find **<tab><c-p>
-nnoremap <leader>F mfgggqG`f
 nnoremap <leader>g :execute('silent grep! ' .. input('Grep: ')) \| redraw! \| copen<cr>
-nnoremap <leader>h :help <tab><c-p>
-nnoremap <leader>H :execute('helpgrep ' .. input('Helpgrep: ')) \| copen<cr>
+nnoremap <leader>h :tab help <tab><c-p>
+nnoremap <leader>H :execute('tab helpgrep ' .. input('Helpgrep: ')) \| copen<cr>
 nnoremap <leader>o :call setqflist([], ' ', { "efm": "%f", "lines": v:oldfiles }) \| copen<cr>
 nnoremap <silent> <leader>q :copen<cr>
 nnoremap <silent> <leader>s :call setreg("c", system("xsel -b"), "c") \| call system("xsel -bi", getreg(""))<cr>
-nnoremap <silent> <leader>t :vertical terminal<cr>
-nnoremap <silent> <leader>T :tabnew<cr>
+nnoremap <silent> <leader>t :tab terminal<cr>
 nnoremap <silent> <leader>v :edit $MYVIMRC<cr>
 nnoremap <silent> <leader>w :set invwrap<cr>
 nnoremap - :edit .<cr>
